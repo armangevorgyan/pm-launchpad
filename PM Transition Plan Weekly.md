@@ -1,4 +1,5 @@
 # PRODUCT MANAGER CAREER TRANSITION PLAN
+**Student: Greta Ghazaryan** | **Tech Mentor: Arman Gevorgyan**
 
 **12-Week Roadmap | March – June 2026**
 

@@ -43,6 +43,16 @@ const DashboardPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div>
+          <h2 className="text-3xl font-bold dark:text-white">Welcome back, Greta! 👋</h2>
+        </div>
+        <div className="text-right">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Target Role</p>
+          <p className="text-sm font-semibold text-primary">Product Manager</p>
+        </div>
+      </div>
+
       <div className="flex flex-col md:flex-row gap-8 items-center">
         <div className="card p-8 flex flex-col items-center flex-1 w-full">
           <h3 className="text-xl font-bold dark:text-white mb-6 self-start uppercase tracking-widest text-slate-400 text-sm">Overall Progress</h3>

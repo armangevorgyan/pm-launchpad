@@ -1,7 +1,7 @@
 import React from 'react';
 import { useProgress } from '../../context/ProgressContext';
 import { weeks } from '../../data/weeks';
-import { CheckCircle2, MessageSquare, Cpu, Laptop, Database, Globe } from 'lucide-react';
+import { CheckCircle2, MessageSquare} from 'lucide-react';
 
 const MentorPage = () => {
   const { mentorSessions, setMentorSessions } = useProgress();
@@ -22,9 +22,15 @@ const MentorPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-12">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold dark:text-white">Mentor Sessions</h2>
-        <p className="text-slate-500 dark:text-slate-400 mt-2">How Arman can help you each week of your journey.</p>
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <h2 className="text-3xl font-bold dark:text-white">Mentor Sessions</h2>
+          <p className="text-slate-500 dark:text-slate-400 mt-2">How Arman can help you each week of your journey.</p>
+        </div>
+        <div className="bg-violet-50 dark:bg-violet-900/20 border border-violet-100 dark:border-violet-800 p-4 rounded-xl">
+          <p className="text-xs font-bold text-violet-600 dark:text-violet-400 uppercase tracking-widest mb-1">Tech Mentor</p>
+          <p className="text-lg font-bold dark:text-white">Arman Gevorgyan</p>
+        </div>
       </div>
 
       <div className="space-y-6">

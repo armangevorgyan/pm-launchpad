@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useProgress } from '../../context/ProgressContext';
-import { Briefcase, Building2, MapPin, Calendar, Plus, Search, ExternalLink, CheckCircle2, Circle } from 'lucide-react';
+import { Building2, Plus, Search, ExternalLink, CheckCircle2, Circle } from 'lucide-react';
 import { targetCompanies } from '../../data/companies';
 
 const JobSearchPage = () => {
