@@ -9,6 +9,7 @@ export const STORAGE_KEYS = {
   PORTFOLIO: 'pm-tracker-portfolio',
   SETTINGS: 'pm-tracker-settings',
   STREAK: 'pm-tracker-streak',
+  CALENDAR: 'pm-tracker-calendar',
 };
 
 export const saveToStorage = (key, data) => {

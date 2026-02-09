@@ -31,6 +31,7 @@ export const ProgressProvider = ({ children }) => {
     lastActiveDate: null,
     activeDates: []
   }));
+  const [calendarLogs, setCalendarLogs] = useState(() => getFromStorage(STORAGE_KEYS.CALENDAR, {}));
 
   // Sync with localStorage
   useEffect(() => saveToStorage(STORAGE_KEYS.TASKS, tasks), [tasks]);
@@ -43,6 +44,7 @@ export const ProgressProvider = ({ children }) => {
   useEffect(() => saveToStorage(STORAGE_KEYS.PORTFOLIO, portfolio), [portfolio]);
   useEffect(() => saveToStorage(STORAGE_KEYS.SETTINGS, settings), [settings]);
   useEffect(() => saveToStorage(STORAGE_KEYS.STREAK, streak), [streak]);
+  useEffect(() => saveToStorage(STORAGE_KEYS.CALENDAR, calendarLogs), [calendarLogs]);
 
   const toggleTask = (taskId) => {
     setTasks(prev => {
@@ -114,6 +116,29 @@ export const ProgressProvider = ({ children }) => {
     }));
   };
 
+  const addCalendarLog = (date, log) => {
+    setCalendarLogs(prev => ({
+      ...prev,
+      [date]: [...(prev[date] || []), { id: Date.now(), text: log, completed: false }]
+    }));
+  };
+
+  const toggleCalendarLog = (date, logId) => {
+    setCalendarLogs(prev => ({
+      ...prev,
+      [date]: prev[date].map(log => 
+        log.id === logId ? { ...log, completed: !log.completed } : log
+      )
+    }));
+  };
+
+  const deleteCalendarLog = (date, logId) => {
+    setCalendarLogs(prev => ({
+      ...prev,
+      [date]: prev[date].filter(log => log.id !== logId)
+    }));
+  };
+
   const value = {
     tasks,
     toggleTask,
@@ -123,6 +148,10 @@ export const ProgressProvider = ({ children }) => {
     toggleFramework,
     toolsStatus,
     updateToolStatus,
+    calendarLogs,
+    addCalendarLog,
+    toggleCalendarLog,
+    deleteCalendarLog,
     applications,
     setApplications,
     notes,

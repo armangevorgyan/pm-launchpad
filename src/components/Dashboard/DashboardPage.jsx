@@ -8,6 +8,7 @@ import { getCurrentWeek } from '../../utils/dates';
 import ProgressRing from './ProgressRing';
 import StreakCounter from './StreakCounter';
 import UpcomingTasks from './UpcomingTasks';
+import Calendar from './Calendar';
 import { Book, BookOpen, PenTool, Briefcase, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -126,6 +127,11 @@ const DashboardPage = () => {
                 </Link>
               );
             })}
+          </div>
+
+          <div className="pt-4">
+            <h4 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400 text-sm mb-6">Activity Calendar</h4>
+            <Calendar />
           </div>
         </div>
         
