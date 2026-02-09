@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, X, Loader2 } from 'lucide-react';
@@ -18,14 +18,117 @@ const PDFReader = () => {
   const book = books.find(b => b.id === bookId);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
-  const [scale, setScale] = useState(1.0);
-  const [loading, setLoading] = useState(true);
+  const [scale, setScale] = useState(window.innerWidth > 1024 ? 0.8 : 1.0);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const viewerRef = useRef(null);
+  const pageNumberRef = useRef(pageNumber);
+  const targetPageRef = useRef(null);
+  const manualScrollTimerRef = useRef(null);
+
+  // Sync ref with state
+  useEffect(() => {
+    pageNumberRef.current = pageNumber;
+  }, [pageNumber]);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (viewerRef.current) {
+        // Subtract padding (p-4 = 16px each side)
+        const width = viewerRef.current.clientWidth - 32;
+        setContainerWidth(width);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => {
+      window.removeEventListener('resize', updateWidth);
+      if (manualScrollTimerRef.current) clearTimeout(manualScrollTimerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          handlePageChange(pageNumber + 1);
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          handlePageChange(pageNumber - 1);
+          break;
+        case 'PageDown':
+          handlePageChange(pageNumber + 5);
+          break;
+        case 'PageUp':
+          handlePageChange(pageNumber - 5);
+          break;
+        case 'Home':
+          handlePageChange(1);
+          break;
+        case 'End':
+          handlePageChange(numPages);
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [pageNumber, numPages]);
 
   useEffect(() => {
     if (booksProgress[bookId]?.lastPage) {
-      setPageNumber(booksProgress[bookId].lastPage);
+      const lastPage = booksProgress[bookId].lastPage;
+      setPageNumber(lastPage);
+      // Wait for document to load before scrolling
+      if (numPages) {
+        setTimeout(() => {
+          const pageElement = viewerRef.current?.querySelector(`[data-page-number="${lastPage}"]`);
+          pageElement?.scrollIntoView();
+        }, 100);
+      }
     }
-  }, [bookId]);
+  }, [bookId, numPages]);
+
+  // Observer to update page number on scroll
+  useEffect(() => {
+    if (!numPages || !viewerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Skip if we're in the middle of a manual scroll
+        if (targetPageRef.current !== null) return;
+
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const pageNum = parseInt(entry.target.getAttribute('data-page-number'));
+            if (pageNum && pageNum !== pageNumberRef.current) {
+              setPageNumber(pageNum);
+              updateBookProgress(bookId, { 
+                lastPage: pageNum,
+                progress: Math.round((pageNum / numPages) * 100)
+              });
+            }
+          }
+        });
+      },
+      {
+        root: viewerRef.current,
+        threshold: 0.1,
+        rootMargin: '-20% 0px -50% 0px' 
+      }
+    );
+
+    const pages = viewerRef.current.querySelectorAll('[data-page-number]');
+    pages.forEach((page) => observer.observe(page));
+
+    return () => observer.disconnect();
+  }, [numPages, bookId]); // Removed pageNumber from dependencies
 
   if (!book) {
     return (
@@ -38,17 +141,28 @@ const PDFReader = () => {
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
-    setLoading(false);
   }
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = useCallback((newPage) => {
     const page = Math.max(1, Math.min(newPage, (numPages || 1)));
+    if (page === pageNumberRef.current) return;
+
+    // Set target to ignore observer during smooth scroll
+    if (manualScrollTimerRef.current) clearTimeout(manualScrollTimerRef.current);
+    targetPageRef.current = page;
     setPageNumber(page);
-    updateBookProgress(bookId, { 
-      lastPage: page,
-      progress: numPages ? Math.round((page / numPages) * 100) : 0
-    });
-  };
+
+    const pageElement = viewerRef.current?.querySelector(`[data-page-number="${page}"]`);
+    if (pageElement) {
+      pageElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Reset target after scroll is likely finished
+    manualScrollTimerRef.current = setTimeout(() => {
+      targetPageRef.current = null;
+      manualScrollTimerRef.current = null;
+    }, 800);
+  }, [numPages]);
 
   return (
     <div className="fixed inset-0 z-[60] bg-slate-900 flex flex-col">
@@ -107,7 +221,10 @@ const PDFReader = () => {
       </div>
 
       {/* Viewer */}
-      <div className="flex-1 overflow-auto bg-slate-900 flex justify-center p-4">
+      <div 
+        ref={viewerRef}
+        className="flex-1 overflow-auto bg-slate-900 p-4 scroll-smooth"
+      >
         <Document
           file={book.pdfUrl}
           onLoadSuccess={onDocumentLoadSuccess}
@@ -124,13 +241,31 @@ const PDFReader = () => {
             </div>
           }
         >
-          <Page 
-            pageNumber={pageNumber} 
-            scale={scale}
-            className="shadow-2xl"
-            renderAnnotationLayer={true}
-            renderTextLayer={true}
-          />
+          {numPages && Array.from(new Array(numPages), (el, index) => (
+            <div 
+              key={`page_${index + 1}`} 
+              data-page-number={index + 1}
+              className="mb-8 last:mb-0 mx-auto w-fit"
+            >
+              <Page 
+                pageNumber={index + 1} 
+                scale={scale}
+                width={containerWidth > 0 ? containerWidth : undefined}
+                className="shadow-2xl"
+                renderAnnotationLayer={true}
+                renderTextLayer={true}
+                loading={
+                  <div 
+                    className="bg-slate-800 animate-pulse shadow-2xl" 
+                    style={{ 
+                      width: containerWidth > 0 ? containerWidth * scale : '600px',
+                      height: containerWidth > 0 ? (containerWidth * scale * 1.4) : '840px' 
+                    }} 
+                  />
+                }
+              />
+            </div>
+          ))}
         </Document>
       </div>
 
