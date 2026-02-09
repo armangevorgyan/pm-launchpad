@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { STORAGE_KEYS, saveToStorage, getFromStorage } from '../utils/storage';
+import { books } from '../data/books';
+import { frameworks } from '../data/frameworks';
+import { tools } from '../data/tools';
+import { portfolioPieces } from '../data/portfolio';
 
 const ProgressContext = createContext();
 
@@ -92,6 +96,20 @@ export const ProgressProvider = ({ children }) => {
     });
   };
 
+  const addCalendarLog = (date, log, completed = true) => {
+    setCalendarLogs(prev => {
+      const currentDayLogs = prev[date] || [];
+      // Prevent duplicates
+      if (currentDayLogs.some(l => l.text === log)) {
+        return prev;
+      }
+      return {
+        ...prev,
+        [date]: [...currentDayLogs, { id: Date.now(), text: log, completed }]
+      };
+    });
+  };
+
   const updateBookProgress = (bookId, update) => {
     setBooksProgress(prev => ({
       ...prev,
@@ -100,27 +118,87 @@ export const ProgressProvider = ({ children }) => {
         ...(typeof update === 'object' ? update : { progress: update })
       }
     }));
+
+    // Auto-log to calendar
+    const book = books.find(b => b.id === bookId);
+    if (book) {
+      const today = new Date().toISOString().split('T')[0];
+      addCalendarLog(today, `Read book: ${book.title}`);
+    }
   };
 
   const toggleFramework = (frameworkId) => {
-    setFrameworksLearned(prev => ({
-      ...prev,
-      [frameworkId]: { learned: !prev[frameworkId]?.learned, learnedAt: new Date().toISOString() }
-    }));
+    setFrameworksLearned(prev => {
+      const isLearned = !prev[frameworkId]?.learned;
+      if (isLearned) {
+        const framework = frameworks.find(f => f.id === frameworkId);
+        if (framework) {
+          const today = new Date().toISOString().split('T')[0];
+          addCalendarLog(today, `Studied framework: ${framework.name}`);
+        }
+      }
+      return {
+        ...prev,
+        [frameworkId]: { learned: isLearned, learnedAt: new Date().toISOString() }
+      };
+    });
   };
 
   const updateToolStatus = (toolId, status) => {
-    setToolsStatus(prev => ({
-      ...prev,
-      [toolId]: { status }
-    }));
+    setToolsStatus(prev => {
+      const tool = tools.find(t => t.id === toolId);
+      if (status !== 'Not Started' && tool) {
+        const today = new Date().toISOString().split('T')[0];
+        addCalendarLog(today, `Interacted with tool: ${tool.name}`);
+      }
+      return {
+        ...prev,
+        [toolId]: { status }
+      };
+    });
   };
 
-  const addCalendarLog = (date, log) => {
-    setCalendarLogs(prev => ({
-      ...prev,
-      [date]: [...(prev[date] || []), { id: Date.now(), text: log, completed: false }]
-    }));
+  const togglePortfolioTask = (pieceId, taskId) => {
+    setPortfolio(prev => {
+      const current = prev[pieceId] || { checklist: {} };
+      const isCompleted = !current.checklist[taskId];
+      
+      if (isCompleted) {
+        const piece = portfolioPieces.find(p => p.id === pieceId);
+        if (piece) {
+          const today = new Date().toISOString().split('T')[0];
+          addCalendarLog(today, `Worked on portfolio: ${piece.title}`);
+        }
+      }
+      
+      return {
+        ...prev,
+        [pieceId]: {
+          ...current,
+          checklist: {
+            ...current.checklist,
+            [taskId]: isCompleted
+          }
+        }
+      };
+    });
+  };
+
+  const updatePortfolioUrl = (pieceId, url) => {
+    setPortfolio(prev => {
+      const piece = portfolioPieces.find(p => p.id === pieceId);
+      if (url && piece) {
+        const today = new Date().toISOString().split('T')[0];
+        addCalendarLog(today, `Updated portfolio: ${piece.title}`);
+      }
+      return {
+        ...prev,
+        [pieceId]: {
+          ...(prev[pieceId] || { checklist: {} }),
+          url
+        }
+      };
+    });
   };
 
   const toggleCalendarLog = (date, logId) => {
@@ -148,6 +226,9 @@ export const ProgressProvider = ({ children }) => {
     toggleFramework,
     toolsStatus,
     updateToolStatus,
+    portfolio,
+    togglePortfolioTask,
+    updatePortfolioUrl,
     calendarLogs,
     addCalendarLog,
     toggleCalendarLog,
@@ -158,8 +239,6 @@ export const ProgressProvider = ({ children }) => {
     setNotes,
     mentorSessions,
     setMentorSessions,
-    portfolio,
-    setPortfolio,
     settings,
     setSettings,
     streak

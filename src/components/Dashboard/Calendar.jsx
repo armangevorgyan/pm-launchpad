@@ -8,10 +8,8 @@ import {
   startOfWeek, 
   endOfWeek, 
   isSameMonth, 
-  isSameDay, 
-  addDays, 
+  isSameDay,
   eachDayOfInterval,
-  parseISO
 } from 'date-fns';
 import { ChevronLeft, ChevronRight, Plus, Trash2, CheckCircle2, Circle } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';

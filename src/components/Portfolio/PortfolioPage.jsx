@@ -4,32 +4,16 @@ import { portfolioPieces } from '../../data/portfolio';
 import { CheckCircle2, Circle, AlertCircle, Link as LinkIcon, ExternalLink } from 'lucide-react';
 
 const PortfolioPage = () => {
-  const { portfolio, setPortfolio } = useProgress();
+  const { portfolio, togglePortfolioTask, updatePortfolioUrl } = useProgress();
 
   const pieces = portfolioPieces;
 
   const toggleCheck = (pieceId, checkId) => {
-    const current = portfolio[pieceId] || { checklist: {} };
-    setPortfolio(prev => ({
-      ...prev,
-      [pieceId]: {
-        ...current,
-        checklist: {
-          ...current.checklist,
-          [checkId]: !current.checklist[checkId]
-        }
-      }
-    }));
+    togglePortfolioTask(pieceId, checkId);
   };
 
   const setUrl = (pieceId, url) => {
-    setPortfolio(prev => ({
-      ...prev,
-      [pieceId]: {
-        ...(prev[pieceId] || { checklist: {} }),
-        url
-      }
-    }));
+    updatePortfolioUrl(pieceId, url);
   };
 
   return (
