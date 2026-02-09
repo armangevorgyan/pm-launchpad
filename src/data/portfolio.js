@@ -27,7 +27,7 @@ export const portfolioPieces = [
   },
   {
     id: 'casestudy',
-    title: 'Banking-to-Fintech Case Study',
+    title: 'Banking-to-Digital Product Case Study',
     description: 'Reimagine a traditional banking process as a modern digital product.',
     warning: "Don't share confidential info from your current role.",
     checklist: [

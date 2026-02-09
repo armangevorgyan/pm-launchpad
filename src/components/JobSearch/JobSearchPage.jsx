@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useProgress } from '../../context/ProgressContext';
-import { Briefcase, Building2, MapPin, Calendar, Plus, Search, ExternalLink } from 'lucide-react';
+import { Briefcase, Building2, MapPin, Calendar, Plus, Search, ExternalLink, CheckCircle2, Circle } from 'lucide-react';
+import { targetCompanies } from '../../data/companies';
 
 const JobSearchPage = () => {
   const { applications, setApplications } = useProgress();
@@ -39,7 +40,7 @@ const JobSearchPage = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <div className="lg:col-span-3 space-y-4">
+        <div className="lg:col-span-3 space-y-8">
           <div className="card overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -77,6 +78,46 @@ const JobSearchPage = () => {
               </tbody>
             </table>
           </div>
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold dark:text-white">Target Companies</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {targetCompanies.map(company => {
+                const isApplied = applications.some(app => app.company.toLowerCase() === company.name.toLowerCase());
+                return (
+                  <div key={company.name} className="card p-5 hover:border-primary/50 transition-colors group">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-bold dark:text-white">{company.name}</h4>
+                          <span className="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 rounded uppercase font-bold tracking-wider">
+                            {company.type}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-400 mt-1">{company.description}</p>
+                      </div>
+                      {isApplied ? (
+                        <CheckCircle2 className="w-5 h-5 text-green-500" />
+                      ) : (
+                        <Circle className="w-5 h-5 text-slate-200 dark:text-slate-700 group-hover:text-primary transition-colors" />
+                      )}
+                    </div>
+                    <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 italic">
+                        <span className="font-bold text-slate-400 not-italic mr-1">Why apply:</span>
+                        {company.whyApply}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 p-4 rounded-xl">
+              <p className="text-sm text-blue-600 dark:text-blue-400">
+                <span className="font-bold">Note:</span> Target is any IT company in Yerevan, not limited to fintech. Banking background is a bonus for fintech roles but PM skills apply everywhere.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-6">
@@ -98,17 +139,6 @@ const JobSearchPage = () => {
                 <span className="text-sm font-medium">CareerCenter</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
-            </div>
-          </div>
-          
-          <div className="card p-6">
-            <h4 className="font-bold dark:text-white mb-4">Target Fintechs</h4>
-            <div className="flex flex-wrap gap-2">
-              {['Idram', 'Telcell', 'FastShift', 'IDBank', 'Ameriabank'].map(t => (
-                <span key={t} className="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs font-medium dark:text-slate-300">
-                  {t}
-                </span>
-              ))}
             </div>
           </div>
         </div>

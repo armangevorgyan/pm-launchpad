@@ -190,7 +190,7 @@ export const weeks = [
         label: "Friday-Saturday",
         tasks: [
           { id: "w2-t7", text: "Study OKRs: read \"Measure What Matters\" summary (don't need the full book)", type: "framework" },
-          { id: "w2-t8", text: "Write OKRs for a hypothetical feature launch at a fintech app", type: "practice" },
+          { id: "w2-t8", text: "Write OKRs for a hypothetical feature launch at a tech product", type: "practice" },
           { id: "w2-t9", text: "With Arman: Walk through a real Jira backlog. Explain: what makes a good ticket? What's missing from bad PRDs? How do engineers estimate work?", type: "mentor" },
         ]
       }
@@ -360,12 +360,12 @@ export const weeks = [
     id: 8,
     title: "Portfolio #3 + Interview Prep Start",
     dateRange: "April 19 – 25",
-    goal: "Complete banking-to-fintech case study. Start interview book.",
+    goal: "Complete banking-to-digital product case study. Start interview book.",
     days: [
       {
         label: "Monday-Tuesday",
         tasks: [
-          { id: "w8-t1", text: "START PORTFOLIO PIECE #3: Banking-to-Fintech Case Study", type: "portfolio" },
+          { id: "w8-t1", text: "START PORTFOLIO PIECE #3: Banking-to-Digital Product Case Study", type: "portfolio" },
           { id: "w8-t2", text: "Use your AraratBank experience: \"How a traditional banking process could be reimagined as a digital product\"", type: "portfolio" },
           { id: "w8-t3", text: "Important: Don't share confidential info. Keep it conceptual based on public knowledge.", type: "note" },
         ]
@@ -430,7 +430,7 @@ export const weeks = [
         label: "Monday-Tuesday",
         tasks: [
           { id: "w10-t1", text: "Rewrite resume completely in PM language", type: "practice" },
-          { id: "w10-t2", text: "Optimize LinkedIn: headline = \"Product Manager | Fintech | Ex-Banking PM\", PM keywords throughout", type: "practice" },
+          { id: "w10-t2", text: "Optimize LinkedIn: headline = \"Product Manager | Ex-Banking PM | SaaS, B2B, Consumer\", PM keywords throughout", type: "practice" },
           { id: "w10-t3", text: "Finish \"Escaping the Build Trap\"", type: "reading" },
         ]
       },
@@ -697,12 +697,14 @@ Job application tracker and interview prep hub.
 - Stats: total applied, response rate, interviews scheduled
 
 **Target Companies Section:**
-- Pre-populated list of Yerevan companies from the plan:
+- Pre-populated list of Yerevan IT companies from the plan:
+  - SaaS/B2B: Krisp, SoloLearn, Podcastle, ServiceTitan, Teamable, CodeSignal
+  - Consumer/Mobile: PicsArt, SuperApp/Menu.am, GG, Zoomerang
   - Fintech: Ameriabank Digital, IDBank, Converse Digital, Telcell, Idram, FastShift
-  - SaaS/B2B: Krisp, SoloLearn, Podcastle, ServiceTitan
-  - Consumer: PicsArt, SuperApp/Menu.am, GG
-  - Startups: HIVE, EPIC, EIF incubators
+  - Enterprise/IT Services: Synopsys Armenia, VMware Armenia, Renderforest, gg (gaming/tech)
+  - Startups: HIVE, EPIC, EIF incubators, early-stage companies
 - Each with: company type tag, "Why apply" note, "Applied" toggle
+- Note: Target is any IT company in Yerevan, not limited to fintech. Banking background is a bonus for fintech roles but PM skills apply everywhere.
 
 **Where to Search:**
 - Links to LinkedIn, Staff.am, CareerCenter.am, company career pages
@@ -730,10 +732,11 @@ Track the 3 portfolio pieces with detailed checklists.
    - Checklist: Choose feature → Problem statement → User stories → Acceptance criteria → Wireframes → Success metrics → Technical considerations → Engineer review → Publish
    - Status tracking + link field
 
-3. **Banking-to-Fintech Case Study**
+3. **Banking-to-Digital Product Case Study**
    - Checklist: Choose topic → Research → User insights → Proposed solution → Metrics → Wireframes → Write up → Publish
    - Status tracking + link field
    - Warning badge: "Don't share confidential info"
+   - Note: Can target fintech, SaaS, consumer — any IT product where banking domain knowledge adds value
 
 ---
 

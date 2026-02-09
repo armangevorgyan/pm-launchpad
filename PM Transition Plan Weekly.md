@@ -177,7 +177,7 @@ This assumes full-time study starting March 1, 2026. If still working part-time,
 
 **Friday-Saturday:**
 - Study OKRs: read "Measure What Matters" summary (don't need the full book)
-- Write OKRs for a hypothetical feature launch at a fintech app
+- Write OKRs for a hypothetical feature launch at a tech product
 - **With Arman:** Arman walks through a real Jira backlog (BlueQubit or SpiceGuyBot). Explain: what makes a good ticket? What's missing from bad PRDs? How do engineers estimate work?
 
 ---
@@ -296,10 +296,10 @@ This assumes full-time study starting March 1, 2026. If still working part-time,
 ### 🔵 WEEK 8: PORTFOLIO PIECE #3 + INTERVIEW PREP START
 *April 19 – 25*
 
-**Goal:** Complete banking-to-fintech case study. Start interview book.
+**Goal:** Complete banking-to-digital product case study. Start interview book.
 
 **Monday-Tuesday:**
-- START PORTFOLIO PIECE #3: Banking-to-Fintech Case Study
+- START PORTFOLIO PIECE #3: Banking-to-Digital Product Case Study
 - Use your AraratBank experience: "How a traditional banking process could be reimagined as a digital product"
 - **🔴 Important:** Don't share confidential info. Keep it conceptual based on public knowledge.
 
@@ -344,7 +344,7 @@ This assumes full-time study starting March 1, 2026. If still working part-time,
 
 **Monday-Tuesday:**
 - Rewrite resume completely in PM language (see Resume section below)
-- Optimize LinkedIn: headline = "Product Manager | Fintech | Ex-Banking PM", PM keywords throughout
+- Optimize LinkedIn: headline = "Product Manager | Ex-Banking PM | SaaS, B2B, Consumer", PM keywords throughout
 - Finish "Escaping the Build Trap"
 
 **Wednesday-Thursday:**
@@ -434,10 +434,13 @@ Every bullet on the resume must be reframed from project delivery to product imp
 
 | Type | Companies | Why |
 |---|---|---|
-| Fintech (sweet spot) | Ameriabank Digital, IDBank, Converse Digital, Telcell, Idram, FastShift | Banking background is a huge advantage here |
-| SaaS / B2B | Krisp, SoloLearn, Podcastle, ServiceTitan (if Yerevan roles) | Strong PM culture, good career growth |
-| Consumer / Mobile | PicsArt, SuperApp/Menu.am, GG (taxi/delivery) | Large user bases, data-driven PM work |
-| Startups | Check HIVE, EPIC, EIF incubators for early-stage companies | More responsibility, less structure, faster learning |
+| SaaS / B2B | Krisp, SoloLearn, Podcastle, ServiceTitan, Teamable, CodeSignal | Strong PM culture, good career growth |
+| Consumer / Mobile | PicsArt, SuperApp/Menu.am, GG, Zoomerang | Large user bases, data-driven PM work |
+| Fintech | Ameriabank Digital, IDBank, Converse Digital, Telcell, Idram, FastShift | Banking background is a huge advantage here |
+| Enterprise / IT Services | Synopsys Armenia, VMware Armenia, Renderforest, gg (gaming/tech) | Deep tech, stable environment |
+| Startups | Check HIVE, EPIC, EIF incubators, early-stage companies | More responsibility, less structure, faster learning |
+
+**Note:** Target is any IT company in Yerevan, not limited to fintech. Banking background is a bonus for fintech roles but PM skills apply everywhere.
 
 **Job titles to search for:** Product Manager, Product Owner, Associate Product Manager, Junior PM. Don't limit yourself — apply to all of these.
 
