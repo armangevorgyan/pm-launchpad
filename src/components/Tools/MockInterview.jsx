@@ -75,12 +75,6 @@ const MockInterview = () => {
   };
 
   const getAIResponse = async (currentMessages) => {
-    const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-    
-    if (!apiKey || apiKey.includes('your_openai_api_key_here')) {
-      throw new Error("OpenAI API key not configured. Please add VITE_OPENAI_API_KEY to your .env file.");
-    }
-
     const systemPrompt = activeTab === 'practice' 
       ? `You are an expert Product Management Interviewer. Your goal is to help the user practice for PM interviews. 
          The user is practicing ${interviewType} questions. 
@@ -91,21 +85,22 @@ const MockInterview = () => {
          Provide constructive feedback on each component (S, T, A, R) and suggest how to make the story more impactful with specific metrics or clearer actions. 
          Use markdown formatting with bold headers for each section.`;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...currentMessages.map(m => ({ role: m.role, content: m.content }))
-        ],
-        temperature: 0.7,
-      })
-    });
+    const makeRequest = async (requestedModel) => {
+      return await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: requestedModel,
+          messages: currentMessages.map(m => ({ role: m.role, content: m.content })),
+          systemPrompt: systemPrompt,
+          temperature: 0.7,
+        })
+      });
+    };
+
+    let response = await makeRequest(model);
 
     if (!response.ok) {
       let errorData;
@@ -113,29 +108,18 @@ const MockInterview = () => {
       const errMsg = (errorData && errorData.error && errorData.error.message) ? errorData.error.message : 'Failed to reach OpenAI';
       const lower = errMsg.toLowerCase();
       const shouldFallback = lower.includes('not a chat model') || lower.includes('not supported') || lower.includes('does not exist') || lower.includes('invalid model') || lower.includes('model not found');
+      
       if (shouldFallback && model !== 'gpt-4o') {
-        const fallbackResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o',
-            messages: [
-              { role: 'system', content: systemPrompt },
-              ...currentMessages.map(m => ({ role: m.role, content: m.content }))
-            ],
-            temperature: 0.7,
-          })
-        });
-        if (fallbackResponse.ok) {
+        response = await makeRequest('gpt-4o');
+        if (response.ok) {
           setModel('gpt-4o');
-          const data2 = await fallbackResponse.json();
-          return data2.choices[0].message.content;
+        } else {
+          try { errorData = await response.json(); } catch (e) {}
+          throw new Error((errorData && errorData.error && errorData.error.message) ? errorData.error.message : 'Failed to reach OpenAI');
         }
+      } else {
+        throw new Error(errMsg);
       }
-      throw new Error(errMsg);
     }
 
     const data = await response.json();
