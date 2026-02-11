@@ -94,5 +94,17 @@ export const tools = [
     url: "https://www.atlassian.com/software/jira",
     tutorialUrl: "https://www.atlassian.com/software/jira/guides",
     logo: "/logos/jira.png"
+  },
+  {
+    id: "mock-interview",
+    name: "AI Mock Interview",
+    category: "New Feature",
+    description: "AI-powered mock interview practice with STAR feedback.",
+    usage: "Interview preparation, STAR story refinement.",
+    freeTier: true,
+    learningTime: "Continuous",
+    url: "#",
+    tutorialUrl: "#",
+    logo: null
   }
 ];

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useProgress } from '../../context/ProgressContext';
-import { Building2, Plus, Search, ExternalLink, CheckCircle2, Circle } from 'lucide-react';
+import { Building2, Plus, Search, ExternalLink, CheckCircle2, Circle, Edit2, Trash2 } from 'lucide-react';
 import { targetCompanies } from '../../data/companies';
 
 const JobSearchPage = () => {
   const { applications, setApplications } = useProgress();
   const [showAdd, setShowAdd] = useState(false);
+  const [editingApp, setEditingApp] = useState(null);
   const [newApp, setNewApp] = useState({ company: '', role: '', status: 'Applied', date: new Date().toISOString().split('T')[0] });
 
   const statusColors = {
@@ -16,11 +17,34 @@ const JobSearchPage = () => {
     'Rejected': 'bg-red-100 text-red-600',
   };
 
-  const addApplication = () => {
+  const openAddModal = () => {
+    setEditingApp(null);
+    setNewApp({ company: '', role: '', status: 'Applied', date: new Date().toISOString().split('T')[0] });
+    setShowAdd(true);
+  };
+
+  const openEditModal = (app) => {
+    setEditingApp(app);
+    setNewApp({ ...app });
+    setShowAdd(true);
+  };
+
+  const saveApplication = () => {
     if (newApp.company && newApp.role) {
-      setApplications(prev => [...prev, { ...newApp, id: Date.now() }]);
+      if (editingApp) {
+        setApplications(prev => prev.map(app => app.id === editingApp.id ? { ...newApp } : app));
+      } else {
+        setApplications(prev => [...prev, { ...newApp, id: Date.now() }]);
+      }
       setNewApp({ company: '', role: '', status: 'Applied', date: new Date().toISOString().split('T')[0] });
       setShowAdd(false);
+      setEditingApp(null);
+    }
+  };
+
+  const deleteApplication = (id) => {
+    if (window.confirm('Are you sure you want to delete this application?')) {
+      setApplications(prev => prev.filter(app => app.id !== id));
     }
   };
 
@@ -32,7 +56,7 @@ const JobSearchPage = () => {
           <p className="text-slate-500 dark:text-slate-400 mt-2">Track your applications and prepare for interviews.</p>
         </div>
         <button 
-          onClick={() => setShowAdd(true)}
+          onClick={openAddModal}
           className="btn-primary flex items-center gap-2"
         >
           <Plus className="w-4 h-4" /> Add Application
@@ -49,6 +73,7 @@ const JobSearchPage = () => {
                   <th className="p-4 text-xs font-bold uppercase tracking-widest text-slate-400">Role</th>
                   <th className="p-4 text-xs font-bold uppercase tracking-widest text-slate-400">Date</th>
                   <th className="p-4 text-xs font-bold uppercase tracking-widest text-slate-400">Status</th>
+                  <th className="p-4 text-xs font-bold uppercase tracking-widest text-slate-400 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
@@ -69,10 +94,28 @@ const JobSearchPage = () => {
                         {app.status}
                       </span>
                     </td>
+                    <td className="p-4 text-right">
+                      <div className="flex justify-end gap-2">
+                        <button 
+                          onClick={() => openEditModal(app)}
+                          className="p-2 text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                          title="Edit"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                        <button 
+                          onClick={() => deleteApplication(app.id)}
+                          className="p-2 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan="4" className="p-12 text-center text-slate-400 italic">No applications tracked yet. Start applying!</td>
+                    <td colSpan="5" className="p-12 text-center text-slate-400 italic">No applications tracked yet. Start applying!</td>
                   </tr>
                 )}
               </tbody>
@@ -147,7 +190,7 @@ const JobSearchPage = () => {
       {showAdd && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl p-8 space-y-6">
-            <h3 className="text-2xl font-bold dark:text-white">Add Application</h3>
+            <h3 className="text-2xl font-bold dark:text-white">{editingApp ? 'Edit Application' : 'Add Application'}</h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Company</label>
@@ -199,10 +242,10 @@ const JobSearchPage = () => {
                 Cancel
               </button>
               <button 
-                onClick={addApplication}
+                onClick={saveApplication}
                 className="flex-1 py-3 bg-primary text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-primary/20"
               >
-                Save
+                {editingApp ? 'Update' : 'Save'}
               </button>
             </div>
           </div>

@@ -13,11 +13,35 @@ const Header = ({ toggleSidebar }) => {
   const [results, setResults] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchRef = useRef(null);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
 
   const toggleDarkMode = () => {
     setSettings(prev => ({ ...prev, darkMode: !prev.darkMode }));
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Cmd/Ctrl + K to focus search
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+      
+      // Global shortcuts (only if not typing in an input/textarea)
+      if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        if (e.key === 'n') {
+          navigate('/notes');
+        }
+        if (e.key === 't') {
+          navigate('/tools');
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [navigate]);
 
   useEffect(() => {
     if (searchQuery.trim().length > 1) {
@@ -77,6 +101,7 @@ const Header = ({ toggleSidebar }) => {
           <div className="flex items-center gap-1 sm:gap-4 bg-slate-50 dark:bg-slate-900 px-2 sm:px-4 py-2 rounded-lg w-28 sm:w-48 md:w-96">
             <Search className="w-5 h-5 text-slate-400 shrink-0" />
             <input 
+              ref={inputRef}
               type="text" 
               placeholder="Search..." 
               className="bg-transparent border-none outline-none text-sm w-full dark:text-white"
@@ -84,6 +109,12 @@ const Header = ({ toggleSidebar }) => {
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => searchQuery.trim().length > 1 && setIsSearchOpen(true)}
             />
+            {!searchQuery && (
+              <div className="hidden md:flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-[10px] font-bold text-slate-400">
+                <span className="text-[12px]">⌘</span>
+                <span>K</span>
+              </div>
+            )}
             {searchQuery && (
               <button onClick={() => setSearchQuery('')}>
                 <X className="w-4 h-4 text-slate-400 hover:text-slate-600" />

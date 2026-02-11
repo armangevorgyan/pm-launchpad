@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { weeks } from '../../data/weeks';
 import { useProgress } from '../../context/ProgressContext';
-import { ChevronLeft, ChevronRight, CheckCircle2, MessageSquare } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, MessageSquare, Filter } from 'lucide-react';
 
 const WeekDetail = () => {
   const { weekId } = useParams();
   const { tasks, toggleTask } = useProgress();
+  const [filterType, setFilterType] = useState('all');
   
   const weekIndex = weeks.findIndex(w => w.id === parseInt(weekId));
   const week = weeks[weekIndex];
   
+  const allTaskTypes = useMemo(() => {
+    if (!week) return [];
+    const types = new Set();
+    week.days.forEach(day => day.tasks.forEach(task => types.add(task.type)));
+    return ['all', ...Array.from(types)];
+  }, [week]);
+
   if (!week) return <div>Week not found</div>;
 
   const nextWeek = weeks[weekIndex + 1];
@@ -69,59 +77,85 @@ const WeekDetail = () => {
         </div>
       </div>
 
-      <div className="space-y-12">
-        {week.days.map((day, dIdx) => (
-          <div key={dIdx}>
-            <h3 className="text-lg font-bold text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-3">
-              <span className={`w-2 h-2 rounded-full ${day.label === 'Sunday' ? 'bg-slate-300' : 'bg-primary'}`}></span>
-              {day.label}
-            </h3>
-            
-            <div className="space-y-3">
-              {day.tasks.map((task) => {
-                const isCompleted = tasks[task.id]?.completed;
-                const isMentor = task.type === 'mentor';
-                
-                return (
-                  <div 
-                    key={task.id}
-                    onClick={() => toggleTask(task.id)}
-                    className={`
-                      card p-5 cursor-pointer flex gap-4 transition-all group
-                      ${isCompleted ? 'opacity-60 grayscale-[0.5]' : 'hover:border-primary hover:shadow-md'}
-                      ${isMentor ? 'border-violet-200 bg-violet-50/30 dark:bg-violet-900/5 dark:border-violet-900/30' : ''}
-                    `}
-                  >
-                    <div className="mt-1">
-                      <div className={`
-                        w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all
-                        ${isCompleted 
-                          ? 'bg-success border-success text-white' 
-                          : 'border-slate-300 dark:border-slate-600 group-hover:border-primary'}
-                      `}>
-                        {isCompleted && <CheckCircle2 className="w-4 h-4" />}
-                      </div>
-                    </div>
-                    
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded border ${getTaskColor(task.type)}`}>
-                          {task.type}
-                        </span>
-                        {isMentor && <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-violet-500 text-violet-500 flex items-center gap-1">
-                          <MessageSquare className="w-3 h-3" /> With Arman
-                        </span>}
-                      </div>
-                      <p className={`text-lg dark:text-slate-200 transition-all ${isCompleted ? 'line-through text-slate-400' : ''}`}>
-                        {task.text}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+      <div className="mb-8 flex flex-wrap gap-2 items-center">
+        <div className="flex items-center gap-2 text-slate-400 mr-2">
+          <Filter className="w-4 h-4" />
+          <span className="text-xs font-bold uppercase tracking-widest">Filter by type:</span>
+        </div>
+        {allTaskTypes.map(type => (
+          <button
+            key={type}
+            onClick={() => setFilterType(type)}
+            className={`
+              px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider transition-all border
+              ${filterType === type 
+                ? 'bg-primary border-primary text-white' 
+                : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 hover:border-primary/50'}
+            `}
+          >
+            {type}
+          </button>
         ))}
+      </div>
+
+      <div className="space-y-12">
+        {week.days.map((day, dIdx) => {
+          const filteredTasks = day.tasks.filter(t => filterType === 'all' || t.type === filterType);
+          if (filteredTasks.length === 0 && filterType !== 'all') return null;
+
+          return (
+            <div key={dIdx}>
+              <h3 className="text-lg font-bold text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-3">
+                <span className={`w-2 h-2 rounded-full ${day.label === 'Sunday' ? 'bg-slate-300' : 'bg-primary'}`}></span>
+                {day.label}
+              </h3>
+              
+              <div className="space-y-3">
+                {filteredTasks.map((task) => {
+                  const isCompleted = tasks[task.id]?.completed;
+                  const isMentor = task.type === 'mentor';
+                  
+                  return (
+                    <div 
+                      key={task.id}
+                      onClick={() => toggleTask(task.id)}
+                      className={`
+                        card p-5 cursor-pointer flex gap-4 transition-all group
+                        ${isCompleted ? 'opacity-60 grayscale-[0.5]' : 'hover:border-primary hover:shadow-md'}
+                        ${isMentor ? 'border-violet-200 bg-violet-50/30 dark:bg-violet-900/5 dark:border-violet-900/30' : ''}
+                      `}
+                    >
+                      <div className="mt-1">
+                        <div className={`
+                          w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all
+                          ${isCompleted 
+                            ? 'bg-success border-success text-white' 
+                            : 'border-slate-300 dark:border-slate-600 group-hover:border-primary'}
+                        `}>
+                          {isCompleted && <CheckCircle2 className="w-4 h-4" />}
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded border ${getTaskColor(task.type)}`}>
+                            {task.type}
+                          </span>
+                          {isMentor && <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-violet-500 text-violet-500 flex items-center gap-1">
+                            <MessageSquare className="w-3 h-3" /> With Arman
+                          </span>}
+                        </div>
+                        <p className={`text-lg dark:text-slate-200 transition-all ${isCompleted ? 'line-through text-slate-400' : ''}`}>
+                          {task.text}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
       
       <div className="mt-20 border-t border-slate-200 dark:border-slate-800 pt-10">
