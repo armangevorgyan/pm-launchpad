@@ -56,7 +56,7 @@ const DashboardPage = () => {
 
       <div className="flex flex-col md:flex-row gap-8 items-center">
         <div className="card p-8 flex flex-col items-center flex-1 w-full">
-          <h3 className="text-xl font-bold dark:text-white mb-6 self-start uppercase tracking-widest text-slate-400 text-sm">Overall Progress</h3>
+          <h3 className="text-xl font-bold dark:text-white mb-6 self-start uppercase tracking-widest text-slate-400">Overall Progress</h3>
           <ProgressRing percentage={overallPercentage} />
         </div>
         
@@ -95,7 +95,7 @@ const DashboardPage = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <h4 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400 text-sm">Weekly Overview</h4>
+          <h4 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400">Weekly Overview</h4>
           <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
             {weeks.map(week => {
               const weekTasks = week.days.flatMap(d => d.tasks);
@@ -130,7 +130,7 @@ const DashboardPage = () => {
           </div>
 
           <div className="pt-4">
-            <h4 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400 text-sm mb-6">Activity Calendar</h4>
+            <h4 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400 mb-6">Activity Calendar</h4>
             <Calendar />
           </div>
         </div>

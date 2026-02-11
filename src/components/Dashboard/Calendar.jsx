@@ -24,7 +24,7 @@ const Calendar = () => {
   const renderHeader = () => {
     return (
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold dark:text-white uppercase tracking-widest text-slate-400 text-sm">
+        <h3 className="text-lg font-bold dark:text-white uppercase tracking-widest text-slate-400">
           {format(currentMonth, 'MMMM yyyy')}
         </h3>
         <div className="flex gap-2">

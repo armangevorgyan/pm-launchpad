@@ -34,7 +34,7 @@ const MentorPage = () => {
       </div>
 
       <div className="space-y-6">
-        <h3 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400 text-sm">Weekly Topics</h3>
+        <h3 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400">Weekly Topics</h3>
         {weeks.map(week => {
           const mentorTask = week.days.flatMap(d => d.tasks).find(t => t.type === 'mentor');
           if (!mentorTask) return null;
@@ -79,7 +79,7 @@ const MentorPage = () => {
       </div>
 
       <div className="space-y-6">
-        <h3 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400 text-sm">Tech Concepts to Learn</h3>
+        <h3 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400">Tech Concepts to Learn</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {techConcepts.map(concept => (
             <div key={concept.id} className="card p-6 border-l-4 border-l-violet-500">

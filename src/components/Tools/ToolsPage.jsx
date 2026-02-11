@@ -17,7 +17,7 @@ const ToolsPage = () => {
       </div>
 
       <section className="space-y-6">
-        <h3 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400 text-sm">Must-Know Tools</h3>
+        <h3 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400">Must-Know Tools</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {mustKnow.map(tool => (
             <ToolCard 
@@ -31,7 +31,7 @@ const ToolsPage = () => {
       </section>
 
       <section className="space-y-6">
-        <h3 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400 text-sm">Good to Understand</h3>
+        <h3 className="text-xl font-bold dark:text-white uppercase tracking-widest text-slate-400">Good to Understand</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {goodToKnow.map(tool => (
             <ToolCard 
