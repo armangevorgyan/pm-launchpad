@@ -8,7 +8,8 @@ export const tools = [
     freeTier: true,
     learningTime: "3-5 hours",
     url: "https://amplitude.com/",
-    tutorialUrl: "https://academy.amplitude.com/"
+    tutorialUrl: "https://academy.amplitude.com/",
+    logo: "/logos/amplitude.png"
   },
   {
     id: "productboard",
@@ -19,7 +20,8 @@ export const tools = [
     freeTier: "Free trial",
     learningTime: "2-3 hours",
     url: "https://www.productboard.com/",
-    tutorialUrl: "https://help.productboard.com/"
+    tutorialUrl: "https://help.productboard.com/",
+    logo: "/logos/productboard.png"
   },
   {
     id: "figma",
@@ -30,7 +32,8 @@ export const tools = [
     freeTier: true,
     learningTime: "5-10 hours",
     url: "https://www.figma.com/",
-    tutorialUrl: "https://www.figma.com/resources/learn-design/"
+    tutorialUrl: "https://www.figma.com/resources/learn-design/",
+    logo: "/logos/figma.png"
   },
   {
     id: "notion",
@@ -41,7 +44,8 @@ export const tools = [
     freeTier: true,
     learningTime: "2 hours",
     url: "https://www.notion.so/",
-    tutorialUrl: "https://www.notion.so/help"
+    tutorialUrl: "https://www.notion.so/help/",
+    logo: "/logos/notion.png"
   },
   {
     id: "miro",
@@ -52,7 +56,32 @@ export const tools = [
     freeTier: true,
     learningTime: "1 hour",
     url: "https://miro.com/",
-    tutorialUrl: "https://miro.com/academy/"
+    tutorialUrl: "https://miro.com/academy/",
+    logo: "/logos/miro.png"
+  },
+  {
+    id: "hotjar",
+    name: "Hotjar",
+    category: "Must-Know",
+    description: "Behavior analytics and user feedback service to understand how users interact with your site.",
+    usage: "Heatmaps, session recordings, and surveys.",
+    freeTier: true,
+    learningTime: "2 hours",
+    url: "https://www.hotjar.com/",
+    tutorialUrl: "https://help.hotjar.com/",
+    logo: "/logos/hotjar.png"
+  },
+  {
+    id: "maze",
+    name: "Maze",
+    category: "Must-Know",
+    description: "Continuous discovery platform for rapid user testing and insights.",
+    usage: "Unmoderated usability testing and prototype validation.",
+    freeTier: true,
+    learningTime: "2 hours",
+    url: "https://maze.co/",
+    tutorialUrl: "https://maze.co/blog/user-testing-guide/",
+    logo: "/logos/maze.png"
   },
   {
     id: "jira",
@@ -63,6 +92,7 @@ export const tools = [
     freeTier: true,
     learningTime: "4 hours",
     url: "https://www.atlassian.com/software/jira",
-    tutorialUrl: "https://www.atlassian.com/software/jira/guides"
+    tutorialUrl: "https://www.atlassian.com/software/jira/guides",
+    logo: "/logos/jira.png"
   }
 ];

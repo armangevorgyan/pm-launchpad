@@ -44,7 +44,7 @@ const JobSearchPage = () => {
           <div className="card overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700">
+                <tr className="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700">
                   <th className="p-4 text-xs font-bold uppercase tracking-widest text-slate-400">Company</th>
                   <th className="p-4 text-xs font-bold uppercase tracking-widest text-slate-400">Role</th>
                   <th className="p-4 text-xs font-bold uppercase tracking-widest text-slate-400">Date</th>
@@ -53,7 +53,7 @@ const JobSearchPage = () => {
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                 {applications.length > 0 ? applications.map(app => (
-                  <tr key={app.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+                  <tr key={app.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-700/50 transition-colors">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center">
@@ -101,7 +101,7 @@ const JobSearchPage = () => {
                         <Circle className="w-5 h-5 text-slate-200 dark:text-slate-700 group-hover:text-primary transition-colors" />
                       )}
                     </div>
-                    <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg">
+                    <div className="bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg">
                       <p className="text-xs text-slate-500 dark:text-slate-400 italic">
                         <span className="font-bold text-slate-400 not-italic mr-1">Why apply:</span>
                         {company.whyApply}

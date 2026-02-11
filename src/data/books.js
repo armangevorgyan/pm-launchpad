@@ -8,6 +8,7 @@ export const books = [
     priority: 1,
     purchaseUrl: "https://www.amazon.com/INSPIRED-Create-Tech-Products-Customers/dp/1119387507",
     coverColor: "#1a365d", // fallback color if no image
+    coverImage: "/books/Inspired.png",
     pdfUrl: "/books/Inspired.pdf"
   },
   {
@@ -19,6 +20,7 @@ export const books = [
     priority: 2,
     purchaseUrl: "https://www.amazon.com/Lean-Product-Playbook-Innovate-Products/dp/1118960874",
     coverColor: "#2d6a4f",
+    coverImage: "/books/The Lean Product Playbook.png",
     pdfUrl: "/books/The Lean Product Playbook.pdf"
   },
   {
@@ -30,6 +32,7 @@ export const books = [
     priority: 3,
     purchaseUrl: "https://www.amazon.com/Dont-Make-Think-Revisited-Usability/dp/0321965515",
     coverColor: "#9c4221",
+    coverImage: "/books/Don't Make Me Think.png",
     pdfUrl: "/books/Don't Make Me Think.pdf"
   },
   {
@@ -41,6 +44,7 @@ export const books = [
     priority: 4,
     purchaseUrl: "https://www.amazon.com/Continuous-Discovery-Habits-Discover-Products/dp/1736633309",
     coverColor: "#553c9a",
+    coverImage: "/books/Continuous Discovery Habits.png",
     pdfUrl: "/books/Continuous Discovery Habits.pdf"
   },
   {
@@ -52,6 +56,7 @@ export const books = [
     priority: 5,
     purchaseUrl: "https://www.amazon.com/Cracking-PM-Interview-Product-Technology/dp/0984782818",
     coverColor: "#b91c1c",
+    coverImage: "/books/Cracking the PM Interview.png",
     pdfUrl: "/books/Cracking the PM Interview.pdf"
   },
   {
@@ -63,6 +68,7 @@ export const books = [
     priority: 6,
     purchaseUrl: "https://www.amazon.com/Escaping-Build-Trap-Effective-Management/dp/149197379X",
     coverColor: "#0e7490",
+    coverImage: "/books/Escaping the Build Trap.png",
     pdfUrl: "/books/Escaping the Build Trap.pdf"
   }
 ];

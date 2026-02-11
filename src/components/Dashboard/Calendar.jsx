@@ -64,11 +64,6 @@ const Calendar = () => {
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
 
-    const rows = [];
-    let days = [];
-    let day = startDate;
-    let formattedDate = "";
-
     const allDays = eachDayOfInterval({ start: startDate, end: endDate });
 
     return (
@@ -135,7 +130,7 @@ const Calendar = () => {
               value={newLog}
               onChange={(e) => setNewLog(e.target.value)}
               placeholder="What did you do today?"
-              className="flex-1 bg-slate-50 dark:bg-slate-800 border-none rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary dark:text-white"
+              className="flex-1 bg-slate-50 dark:bg-slate-700 border-none rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary dark:text-white"
             />
             <button 
               type="submit"
@@ -150,7 +145,7 @@ const Calendar = () => {
               <p className="text-sm text-slate-400 italic text-center py-4">No logs for this day.</p>
             ) : (
               currentLogs.map(log => (
-                <div key={log.id} className="group flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <div key={log.id} className="group flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                   <div className="flex items-center gap-3">
                     <button 
                       onClick={() => toggleCalendarLog(selectedDateStr, log.id)}

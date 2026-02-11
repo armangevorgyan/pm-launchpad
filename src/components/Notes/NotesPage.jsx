@@ -36,7 +36,7 @@ const NotesPage = () => {
 
   const renderEditor = (note) => (
     <>
-      <div className="p-4 md:p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+      <div className="p-4 md:p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-700/50">
         <input 
           type="text" 
           value={note.title}
@@ -57,7 +57,7 @@ const NotesPage = () => {
         className="flex-1 min-h-[300px] md:min-h-0 p-4 md:p-8 bg-transparent border-none outline-none resize-none dark:text-slate-300 leading-relaxed text-base md:text-lg"
         placeholder="Start writing..."
       ></textarea>
-      <div className="p-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+      <div className="p-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-700/50 flex items-center gap-2">
         <Tag className="w-4 h-4 text-slate-400" />
         <div className="flex gap-2">
           <span className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-[10px] font-bold text-slate-500 uppercase">Learning</span>

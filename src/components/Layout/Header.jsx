@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bell, Moon, Sun, Search, Book, BookOpen, Wrench, Calendar, X, Menu } from 'lucide-react';
+import { Moon, Sun, Search, Book, BookOpen, Wrench, Calendar, X, Menu } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 import { useNavigate } from 'react-router-dom';
 import { frameworks } from '../../data/frameworks';
@@ -17,7 +17,6 @@ const Header = ({ toggleSidebar }) => {
 
   const toggleDarkMode = () => {
     setSettings(prev => ({ ...prev, darkMode: !prev.darkMode }));
-    document.documentElement.classList.toggle('dark');
   };
 
   useEffect(() => {
@@ -134,11 +133,7 @@ const Header = ({ toggleSidebar }) => {
         >
           {settings.darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
         </button>
-        
-        <button className="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-          <Bell className="w-5 h-5" />
-        </button>
-        
+
         <div className="h-8 w-px bg-slate-200 dark:border-slate-700 hidden sm:block"></div>
         
         <div className="flex items-center gap-1 sm:gap-3">

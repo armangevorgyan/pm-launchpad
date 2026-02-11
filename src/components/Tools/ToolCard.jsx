@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, Play, CheckCircle2, Clock } from 'lucide-react';
+import { ExternalLink, Play, Clock } from 'lucide-react';
 
 const ToolCard = ({ tool, status, onUpdateStatus }) => {
   const statusOptions = ['Not Started', 'Learning', 'Comfortable'];
@@ -15,8 +15,12 @@ const ToolCard = ({ tool, status, onUpdateStatus }) => {
   return (
     <div className="card p-6 flex flex-col h-full">
       <div className="flex justify-between items-start mb-4">
-        <div className="w-12 h-12 bg-slate-50 dark:bg-slate-900 rounded-xl flex items-center justify-center border border-slate-100 dark:border-slate-800">
-          <span className="text-xl font-bold text-primary">{tool.name[0]}</span>
+        <div className="w-12 h-12 bg-white dark:bg-slate-900 rounded-xl flex items-center justify-center border border-slate-100 dark:border-slate-800 overflow-hidden">
+          {tool.logo ? (
+            <img src={tool.logo} alt={tool.name} className="w-8 h-8 object-contain" />
+          ) : (
+            <span className="text-xl font-bold text-primary">{tool.name[0]}</span>
+          )}
         </div>
         <select 
           value={status || 'Not Started'} 

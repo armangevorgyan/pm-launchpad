@@ -16,7 +16,7 @@ const ProgressRing = ({ percentage, size = 200, strokeWidth = 15 }) => {
           stroke="currentColor"
           strokeWidth={strokeWidth}
           fill="transparent"
-          className="text-slate-100 dark:text-slate-800"
+          className="text-slate-100 dark:text-slate-700"
         />
         {/* Progress circle */}
         <circle

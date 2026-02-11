@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ExternalLink, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const BookCard = ({ book, progress, onUpdateProgress }) => {
+const BookCard = ({ book, progress }) => {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <div className="card flex flex-col sm:flex-row gap-6 p-6 hover:shadow-md transition-shadow">
       <div 
         className="w-full sm:w-32 h-48 rounded-lg shadow-inner flex items-center justify-center text-white p-4 text-center font-bold relative overflow-hidden group"
         style={{ backgroundColor: book.coverColor }}
       >
-        <span className="relative z-10">{book.title}</span>
+        {book.coverImage && !imageError ? (
+          <img 
+            src={book.coverImage} 
+            alt={book.title}
+            className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-110"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <span className="relative z-10">{book.title}</span>
+        )}
         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
       </div>
       

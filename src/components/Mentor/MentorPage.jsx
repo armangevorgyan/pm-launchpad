@@ -60,7 +60,7 @@ const MentorPage = () => {
                 <p className="text-slate-600 dark:text-slate-300 mb-4">{mentorTask.text}</p>
                 
                 {isCompleted ? (
-                  <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-100 dark:border-slate-700">
+                  <div className="bg-white dark:bg-slate-700 p-4 rounded-lg border border-slate-100 dark:border-slate-600">
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Session Takeaways</p>
                     <p className="text-sm text-slate-500 italic">No notes added for this session.</p>
                   </div>

@@ -50,6 +50,15 @@ export const ProgressProvider = ({ children }) => {
   useEffect(() => saveToStorage(STORAGE_KEYS.STREAK, streak), [streak]);
   useEffect(() => saveToStorage(STORAGE_KEYS.CALENDAR, calendarLogs), [calendarLogs]);
 
+  // Apply dark mode class to document
+  useEffect(() => {
+    if (settings.darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [settings.darkMode]);
+
   const toggleTask = (taskId) => {
     setTasks(prev => {
       const isCompleted = prev[taskId]?.completed;
