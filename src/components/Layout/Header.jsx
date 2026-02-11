@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bell, Moon, Sun, Search, Book, BookOpen, Wrench, Calendar, X } from 'lucide-react';
+import { Bell, Moon, Sun, Search, Book, BookOpen, Wrench, Calendar, X, Menu } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 import { useNavigate } from 'react-router-dom';
 import { frameworks } from '../../data/frameworks';
@@ -7,7 +7,7 @@ import { books } from '../../data/books';
 import { tools } from '../../data/tools';
 import { weeks } from '../../data/weeks';
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
   const { settings, setSettings } = useProgress();
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -65,60 +65,69 @@ const Header = () => {
   };
 
   return (
-    <header className="h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-8 flex items-center justify-between sticky top-0 z-50">
-      <div className="relative" ref={searchRef}>
-        <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-900 px-4 py-2 rounded-lg w-96">
-          <Search className="w-5 h-5 text-slate-400" />
-          <input 
-            type="text" 
-            placeholder="Search for frameworks, books, or tools..." 
-            className="bg-transparent border-none outline-none text-sm w-full dark:text-white"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => searchQuery.trim().length > 1 && setIsSearchOpen(true)}
-          />
-          {searchQuery && (
-            <button onClick={() => setSearchQuery('')}>
-              <X className="w-4 h-4 text-slate-400 hover:text-slate-600" />
-            </button>
+    <header className="h-16 w-full bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 md:px-8 flex items-center justify-between sticky top-0 z-40">
+      <div className="flex items-center gap-1 sm:gap-4">
+        <button 
+          onClick={toggleSidebar}
+          className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+        
+        <div className="relative" ref={searchRef}>
+          <div className="flex items-center gap-1 sm:gap-4 bg-slate-50 dark:bg-slate-900 px-2 sm:px-4 py-2 rounded-lg w-28 sm:w-48 md:w-96">
+            <Search className="w-5 h-5 text-slate-400 shrink-0" />
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              className="bg-transparent border-none outline-none text-sm w-full dark:text-white"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => searchQuery.trim().length > 1 && setIsSearchOpen(true)}
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')}>
+                <X className="w-4 h-4 text-slate-400 hover:text-slate-600" />
+              </button>
+            )}
+          </div>
+
+          {isSearchOpen && results.length > 0 && (
+            <div className="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden max-h-[400px] overflow-y-auto">
+              <div className="p-2">
+                {results.map((result, idx) => (
+                  <button
+                    key={`${result.type}-${result.id || idx}`}
+                    onClick={() => handleResultClick(result.path)}
+                    className="w-full flex items-center gap-4 p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors text-left"
+                  >
+                    <div className={`p-2 rounded-lg ${
+                      result.type === 'framework' ? 'bg-teal-50 text-teal-500 dark:bg-teal-900/20' :
+                      result.type === 'book' ? 'bg-blue-50 text-blue-500 dark:bg-blue-900/20' :
+                      result.type === 'tool' ? 'bg-orange-50 text-orange-500 dark:bg-orange-900/20' :
+                      'bg-purple-50 text-purple-500 dark:bg-purple-900/20'
+                    }`}>
+                      <result.icon className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold dark:text-white">{result.name}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{result.type}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {isSearchOpen && results.length === 0 && searchQuery.trim().length > 1 && (
+            <div className="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-700 p-8 text-center">
+              <p className="text-slate-500 dark:text-slate-400 text-sm">No results found for "{searchQuery}"</p>
+            </div>
           )}
         </div>
-
-        {isSearchOpen && results.length > 0 && (
-          <div className="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden max-h-[400px] overflow-y-auto">
-            <div className="p-2">
-              {results.map((result, idx) => (
-                <button
-                  key={`${result.type}-${result.id || idx}`}
-                  onClick={() => handleResultClick(result.path)}
-                  className="w-full flex items-center gap-4 p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors text-left"
-                >
-                  <div className={`p-2 rounded-lg ${
-                    result.type === 'framework' ? 'bg-teal-50 text-teal-500 dark:bg-teal-900/20' :
-                    result.type === 'book' ? 'bg-blue-50 text-blue-500 dark:bg-blue-900/20' :
-                    result.type === 'tool' ? 'bg-orange-50 text-orange-500 dark:bg-orange-900/20' :
-                    'bg-purple-50 text-purple-500 dark:bg-purple-900/20'
-                  }`}>
-                    <result.icon className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold dark:text-white">{result.name}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{result.type}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {isSearchOpen && results.length === 0 && searchQuery.trim().length > 1 && (
-          <div className="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-700 p-8 text-center">
-            <p className="text-slate-500 dark:text-slate-400 text-sm">No results found for "{searchQuery}"</p>
-          </div>
-        )}
       </div>
       
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-1 sm:gap-6">
         <button 
           onClick={toggleDarkMode}
           className="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
@@ -130,9 +139,9 @@ const Header = () => {
           <Bell className="w-5 h-5" />
         </button>
         
-        <div className="h-8 w-px bg-slate-200 dark:border-slate-700"></div>
+        <div className="h-8 w-px bg-slate-200 dark:border-slate-700 hidden sm:block"></div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1 sm:gap-3">
           <div className="text-right hidden sm:block">
             <p className="text-sm font-semibold dark:text-white">Greta Ghazaryan</p>
             <p className="text-xs text-slate-500 dark:text-slate-400">Product Manager</p>
