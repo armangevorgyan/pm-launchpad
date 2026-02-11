@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useProgress } from '../../context/ProgressContext';
 import { getCurrentWeek } from '../../utils/dates';
 import { 
@@ -40,10 +40,16 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
     `}>
       <div className="p-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-primary flex items-center gap-2">
-          <LayoutDashboard className="w-8 h-8" />
-          <span>PM Mission</span>
-        </h1>
+        <Link 
+          to="/" 
+          className="group"
+          onClick={() => setIsOpen(false)}
+        >
+          <h1 className="text-2xl font-bold text-primary flex items-center gap-2">
+            <LayoutDashboard className="w-8 h-8 transition-transform group-hover:scale-110" />
+            <span>PM Mission</span>
+          </h1>
+        </Link>
         <button 
           onClick={() => setIsOpen(false)}
           className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
