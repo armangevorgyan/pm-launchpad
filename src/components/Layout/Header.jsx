@@ -135,7 +135,7 @@ const Header = () => {
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
             <p className="text-sm font-semibold dark:text-white">Greta Ghazaryan</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Future Product Manager</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Product Manager</p>
           </div>
           <div className="w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center font-bold">
             GG
